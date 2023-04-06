@@ -1,0 +1,6 @@
+C:\Users\adrion\Desktop\zero backup\config.ini
+C:\Users\adrion\Desktop\zero backup\ChronoVault.exe
+C:\Users\adrion\Desktop\zero backup\ChronoVault.dll
+C:\Users\adrion\Desktop\zero backup\ChronoVault.deps.json
+C:\Users\adrion\Desktop\zero backup\ChronoVault.runtimeconfig.json
+C:\Users\adrion\Desktop\zero backup\ChronoVault.pdb

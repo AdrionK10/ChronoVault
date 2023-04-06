@@ -1,0 +1,16 @@
+C:\Users\adrion\source\repos\ChronoVault\ChronoVault\ChronoVault\bin\Debug\net7.0\ChronoVault.exe
+C:\Users\adrion\source\repos\ChronoVault\ChronoVault\ChronoVault\bin\Debug\net7.0\ChronoVault.deps.json
+C:\Users\adrion\source\repos\ChronoVault\ChronoVault\ChronoVault\bin\Debug\net7.0\ChronoVault.runtimeconfig.json
+C:\Users\adrion\source\repos\ChronoVault\ChronoVault\ChronoVault\bin\Debug\net7.0\ChronoVault.dll
+C:\Users\adrion\source\repos\ChronoVault\ChronoVault\ChronoVault\bin\Debug\net7.0\ChronoVault.pdb
+C:\Users\adrion\source\repos\ChronoVault\ChronoVault\ChronoVault\obj\Debug\net7.0\ChronoVault.csproj.AssemblyReference.cache
+C:\Users\adrion\source\repos\ChronoVault\ChronoVault\ChronoVault\obj\Debug\net7.0\ChronoVault.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\adrion\source\repos\ChronoVault\ChronoVault\ChronoVault\obj\Debug\net7.0\ChronoVault.AssemblyInfoInputs.cache
+C:\Users\adrion\source\repos\ChronoVault\ChronoVault\ChronoVault\obj\Debug\net7.0\ChronoVault.AssemblyInfo.cs
+C:\Users\adrion\source\repos\ChronoVault\ChronoVault\ChronoVault\obj\Debug\net7.0\ChronoVault.csproj.CoreCompileInputs.cache
+C:\Users\adrion\source\repos\ChronoVault\ChronoVault\ChronoVault\obj\Debug\net7.0\ChronoVault.dll
+C:\Users\adrion\source\repos\ChronoVault\ChronoVault\ChronoVault\obj\Debug\net7.0\refint\ChronoVault.dll
+C:\Users\adrion\source\repos\ChronoVault\ChronoVault\ChronoVault\obj\Debug\net7.0\ChronoVault.pdb
+C:\Users\adrion\source\repos\ChronoVault\ChronoVault\ChronoVault\obj\Debug\net7.0\ChronoVault.genruntimeconfig.cache
+C:\Users\adrion\source\repos\ChronoVault\ChronoVault\ChronoVault\obj\Debug\net7.0\ref\ChronoVault.dll
+C:\Users\adrion\source\repos\ChronoVault\ChronoVault\ChronoVault\bin\Debug\net7.0\config.ini

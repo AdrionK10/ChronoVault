@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "8NYrInSalHVcCT49Q0NlRmMLr7xtgYGU5qhv6A+gvcuAruJTpwuNxczyQz1o6dwt8uHctRU49IWb7r3qyi9kvw==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\adrion\\source\\repos\\ChronoVault\\ChronoVault\\ChronoVault\\ChronoVault.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\adrion\\.nuget\\packages\\octodiff\\1.3.23\\octodiff.1.3.23.nupkg.sha512"
+  ],
+  "logs": []
+}
