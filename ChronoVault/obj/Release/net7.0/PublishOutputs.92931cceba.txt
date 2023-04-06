@@ -4,3 +4,4 @@ C:\Users\adrion\Desktop\ChronoVault\ChronoVault.dll
 C:\Users\adrion\Desktop\ChronoVault\ChronoVault.deps.json
 C:\Users\adrion\Desktop\ChronoVault\ChronoVault.runtimeconfig.json
 C:\Users\adrion\Desktop\ChronoVault\ChronoVault.pdb
+C:\Users\adrion\Desktop\ChronoVault\Octodiff.dll

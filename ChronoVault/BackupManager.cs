@@ -1,4 +1,6 @@
 ﻿using System.Globalization;
+using Octodiff.Core;
+using Octodiff.Diagnostics;
 
 namespace ChronoVault
 {
@@ -63,7 +65,9 @@ namespace ChronoVault
 
                 currentBackup = CreateBackupFolder(backupRoot, currentBackupNum); // Create a new backup folder with an updated timestamp
 
-                int copiedFilesCount = CopyFiles(source, currentBackup, fileTypes);
+                
+                var copiedFilesCount = CopyFiles(source, currentBackup, fileTypes, false);
+                
                 LastBackupTime = DateTime.Now;
 
                 if (copiedFilesCount > 0)
@@ -134,16 +138,17 @@ namespace ChronoVault
             return folderPath;
         }
 
-        private int CopyFiles(string source, string destination, string[] fileTypes, bool restoring = false)
+        private int CopyFiles(string source, string destination, string[] fileTypes, bool restoring)
         {
             var copiedFilesCount = 0;
 
             foreach (var fileType in fileTypes)
             {
-                foreach (var file in Directory.GetFiles(source, fileType))
+                foreach (var file in Directory.GetFiles(source, restoring? "" : fileType))
                 {
                     var fileInfo = new FileInfo(file);
-                    var destinationFile = Path.Combine(destination, fileInfo.Name);
+                    var destinationFile = restoring
+                        ? Path.Combine(source, fileInfo.Name): Path.Combine(destination, fileInfo.Name);
 
                     if (BackupModifiedOnly && !restoring)
                     {
@@ -152,10 +157,83 @@ namespace ChronoVault
                             // Skip the file if it hasn't been modified since the last backup
                             continue;
                         }
-                    }
 
-                    File.Copy(file, destinationFile, true);
-                    copiedFilesCount++;
+                        // Copy the file to memory
+                        MemoryStream fileContent;
+                        using (var fileStream = File.Open(file, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+                        {
+                            fileContent = new MemoryStream();
+                            fileStream.CopyTo(fileContent);
+                            fileContent.Position = 0; // Reset the position to the beginning of the stream
+                        }
+
+                        // Create signature
+                        string signatureFile = Path.Combine(destination, fileInfo.Name + ".sig");
+                        using (var signatureStream = File.Create(signatureFile))
+                        {
+                            var signatureBuilder = new SignatureBuilder();
+                            signatureBuilder.Build(fileContent, new SignatureWriter(signatureStream));
+                        }
+
+                        // Reset the position of the MemoryStream to the beginning
+                        fileContent.Position = 0;
+
+                        // Create delta
+                        string deltaFile = Path.Combine(destination, fileInfo.Name + ".delta");
+                        using (var signatureStream = File.OpenRead(signatureFile))
+                        using (var deltaStream = File.Create(deltaFile))
+                        {
+                            var deltaBuilder = new DeltaBuilder();
+                            deltaBuilder.BuildDelta(fileContent,
+                                new SignatureReader(signatureStream, new NullProgressReporter()),
+                                new AggregateCopyOperationsDecorator(new BinaryDeltaWriter(deltaStream)));
+                        }
+
+                        // Delete the original file from the destination
+                        if (File.Exists(destinationFile))
+                        {
+                            File.Delete(destinationFile);
+                        }
+
+                        copiedFilesCount++;
+                    }
+                    else if (restoring)
+                    {
+                        
+                        //set filename to fileinfo.name but remove everything after the last dot and the dot included
+                        string filename = fileInfo.Name;
+                        filename = filename.Substring(0, filename.LastIndexOf('.'));
+                        string originalFile = Path.Combine(source, filename);
+                        
+                        
+                        string deltaFile = Path.Combine(destination, filename + ".delta");
+                        if (File.Exists(deltaFile))
+                        {
+                            using (var basisStream = File.Open(originalFile, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+                            using (var deltaStream = File.OpenRead(deltaFile))
+                            using (var destinationStream = new MemoryStream())
+                            {
+                                var deltaApplier = new DeltaApplier { SkipHashCheck = true };
+                                deltaApplier.Apply(basisStream, new BinaryDeltaReader(deltaStream, new NullProgressReporter()), destinationStream);
+
+                                destinationStream.Position = 0;
+                                using (var fileStream = File.Open(originalFile, FileMode.Create, FileAccess.Write, FileShare.ReadWrite))
+                                {
+                                    destinationStream.CopyTo(fileStream);
+                                }
+                            }
+                        }
+                        else
+                        {
+                            // If there's no delta, copy the entire file
+                            using (var fileStream = File.Open(file, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+                            using (var destinationStream = File.Open(destinationFile, FileMode.Create, FileAccess.Write, FileShare.ReadWrite))
+                            {
+                                fileStream.CopyTo(destinationStream);
+                            }
+                        }
+                        copiedFilesCount++;
+                    }
                 }
             }
 
@@ -190,7 +268,7 @@ namespace ChronoVault
         {
             if (Directory.Exists(backupFolder))
             {
-                CopyFiles(backupFolder, source, fileTypes, restoring: true);
+                CopyFiles(source, backupFolder, fileTypes, true);
                 Console.WriteLine($"Backup restored from {backupFolder}");
             }
             else

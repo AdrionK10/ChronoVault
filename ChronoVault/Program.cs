@@ -98,8 +98,8 @@ namespace ChronoVault
                         selectedIndex <= backupFolders.Length)
                     {
                         var selectedBackup = backupFolders[selectedIndex - 1];
-                        Console.WriteLine($"Restoring backup from {Path.GetFileName(selectedBackup)}...");
                         backupManager.RestoreBackup(selectedBackup);
+                        Console.WriteLine($"Restoring backup from {Path.GetFileName(selectedBackup)}...");
                     }
                     else if (input.Equals("C", StringComparison.OrdinalIgnoreCase))
                     {

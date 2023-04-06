@@ -14,3 +14,5 @@ C:\Users\adrion\source\repos\ChronoVault\ChronoVault\ChronoVault\obj\Release\net
 C:\Users\adrion\source\repos\ChronoVault\ChronoVault\ChronoVault\obj\Release\net7.0\ChronoVault.pdb
 C:\Users\adrion\source\repos\ChronoVault\ChronoVault\ChronoVault\obj\Release\net7.0\ChronoVault.genruntimeconfig.cache
 C:\Users\adrion\source\repos\ChronoVault\ChronoVault\ChronoVault\obj\Release\net7.0\ref\ChronoVault.dll
+C:\Users\adrion\source\repos\ChronoVault\ChronoVault\ChronoVault\bin\Release\net7.0\Octodiff.dll
+C:\Users\adrion\source\repos\ChronoVault\ChronoVault\ChronoVault\obj\Release\net7.0\ChronoVault.csproj.CopyComplete
