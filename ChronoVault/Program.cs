@@ -10,17 +10,19 @@ namespace ChronoVault
 
             var source = config["source"];
             var backupRoot = config["backupRoot"];
+            var allowSubfolders = Convert.ToBoolean(config["allowSubfolders"]);
             var fileTypes = config["fileTypes"].Split(',');
             var maxBackups = Convert.ToInt32(config["maxBackups"]);
             var seconds = Convert.ToInt32(config["secondsBetweenBackups"]);
             var modifiedOnly = Convert.ToBoolean(config["backupModifiedOnly"]);
             var copyAllOnStartup = Convert.ToBoolean(config["copyAllOnStartup"]);
 
-            var backupManager = new BackupManager(source, backupRoot, fileTypes, maxBackups, seconds, modifiedOnly,
-                copyAllOnStartup);
+            var backupManager = new BackupManager(source, backupRoot, allowSubfolders, fileTypes, maxBackups, 
+                seconds, modifiedOnly, copyAllOnStartup);
 
             // Start the backup loop in a separate thread
             var backupThread = new Thread(backupManager.StartBackupLoop);
+            var timeBetweenSpan = TimeSpan.FromSeconds(seconds);
             var timeLoopSpan = TimeSpan.FromSeconds(seconds * maxBackups);
             backupThread.Start();
 
@@ -34,12 +36,30 @@ namespace ChronoVault
                               + Environment.NewLine + "Backup modified only: " + modifiedOnly
                               + Environment.NewLine + "Copy all on startup: " + copyAllOnStartup);
             Console.WriteLine();
-            Console.WriteLine("Backup Span: ("
-                              + timeLoopSpan.Days + ") Days ("
-                              + timeLoopSpan.Hours + ") Hours ("
-                              + timeLoopSpan.Minutes + ") Minutes ("
-                              + timeLoopSpan.Seconds + ") Seconds ");
+            Console.WriteLine("Time Between Backups: ("
+                              + timeBetweenSpan.Days + ") Days ("
+                              + timeBetweenSpan.Hours + ") Hours ("
+                              + timeBetweenSpan.Minutes + ") Minutes ("
+                              + timeBetweenSpan.Seconds + ") Seconds ");
             
+            if (!modifiedOnly)
+            {
+                Console.WriteLine();
+                Console.WriteLine("Backup Loop Age: ("
+                                  + timeLoopSpan.Days + ") Days ("
+                                  + timeLoopSpan.Hours + ") Hours ("
+                                  + timeLoopSpan.Minutes + ") Minutes ("
+                                  + timeLoopSpan.Seconds + ") Seconds ");
+
+                Console.WriteLine("** How far back the backups will go before they start to overwrite each other. **");
+            }
+            else
+            {
+                Console.WriteLine("** Backup Modified Only is enabled. **");
+                Console.WriteLine("** Backups will only be created when a file is modified. **");
+                Console.WriteLine("** Backups will only overwrite each other when the maximum # of backups is reached.**");
+            }
+
             Console.WriteLine();
             Console.WriteLine("ChronoVault is running in the background");
             Console.WriteLine();
